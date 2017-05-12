@@ -49,11 +49,17 @@ async.series([
                 }
 
             }));
+        callback(null);
     },
     function (callback) {
-        // /opt/couchbase/bin/cbdocloader -u admin -p rWxyyZnBPajATs2K2NV5 -b facilities -n 127.0.01:8091 __dirname/import
+        console.log('Complete, please run:');
+        console.log('/opt/couchbase/bin/cbdocloader -u admin -b facilities -n 127.0.01:8091 -p <password> ' + path.join(__dirname,'import'));
+        callback(null)
+        // '/opt/couchbase/bin/cbdocloader -u admin -b facilities -n 127.0.01:8091 -p <password> ' + path.join(__dirname,'import'));
     }
-])
+], function(){
+    process.exit('0');
+})
 
 
 
