@@ -11,15 +11,25 @@ var getStream = function () {
     return stream.pipe(parser);
 };
 
-getStream()
-    .pipe(es.mapSync(function (data) {
-        if (Array.isArray(data)){
+fs.mkdir(path.join(__dirname,'export'), function(err){
+    if (err) console.log('Export directory existed, continuing')
+    else {
+        console.log('Export direct created continuing...');
+    }
+    run();
+})
 
-            data.forEach(function(item){
-                let file = path.join(__dirname,'export',uuidV1()+'.json');
-                fs.writeFileSync(file,JSON.stringify(item),'utf-8');
-            })
+function run() {
+    getStream()
+        .pipe(es.mapSync(function (data) {
+            if (Array.isArray(data)) {
 
-        }
+                data.forEach(function (item) {
+                    let file = path.join(__dirname, 'export', uuidV1() + '.json');
+                    fs.writeFileSync(file, JSON.stringify(item), 'utf-8');
+                })
 
-    }));
+            }
+
+        }));
+}
