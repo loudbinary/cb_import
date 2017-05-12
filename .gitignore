@@ -1,3 +1,6 @@
+archive_source.zip
+export/
+node_modules/
 # Logs
 logs
 *.log
