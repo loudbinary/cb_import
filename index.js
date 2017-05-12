@@ -31,25 +31,24 @@ async.series([
         })
     },
     function(callback){
-        run(function(err){
-            console.log('Export completed');
-        })
+        var getStream = function () {
+            var jsonData = 'flight_restrictions.json',
+                stream = fs.createReadStream(jsonData, {encoding: 'utf8'}),
+                parser = JSONStream.parse('*');
+            return stream.pipe(parser);
+        };
+        getStream()
+            .pipe(es.mapSync(function (data) {
+                if (Array.isArray(data)) {
+
+                    data.forEach(function (item) {
+                        let file = path.join(__dirname, 'import','docs', uuidV1() + '.json');
+                        fs.writeFileSync(file, JSON.stringify(item), 'utf-8');
+                    })
+
+                }
+
+            }));
     }
 ])
 
-
-function run(callback) {
-    getStream()
-        .pipe(es.mapSync(function (data) {
-            if (Array.isArray(data)) {
-
-                data.forEach(function (item) {
-                    let file = path.join(__dirname, 'import', uuidV1() + '.json');
-                    fs.writeFileSync(file, JSON.stringify(item), 'utf-8');
-                })
-
-            }
-
-        }));
-    callback(null);
-}
