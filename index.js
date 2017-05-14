@@ -5,12 +5,14 @@ var fs = require('fs'),
     uuidV1 = require('uuid/v1'),
     path = require('path'),
     async = require('async');
+/*
 var getStream = function () {
     var jsonData = 'flight_restrictions.json',
         stream = fs.createReadStream(jsonData, {encoding: 'utf8'}),
         parser = JSONStream.parse('*');
     return stream.pipe(parser);
 };
+*/
 async.series([
     function(callback){
         fs.mkdir(path.join(__dirname,'import'), function(err) {
@@ -31,25 +33,28 @@ async.series([
         })
     },
     function(callback){
+	console.log('Creating flight restriction json files.');
         var getStream = function () {
-            var jsonData = 'flight_restrictions.json',
+            var jsonData = path.join(__dirname,'flight_restrictions.json'),
                 stream = fs.createReadStream(jsonData, {encoding: 'utf8'}),
                 parser = JSONStream.parse('*');
             return stream.pipe(parser);
         };
         getStream()
             .pipe(es.mapSync(function (data) {
+		console.log(data);
                 if (Array.isArray(data)) {
 
                     data.forEach(function (item) {
                         let file = path.join(__dirname, 'import','docs', uuidV1() + '.json');
-                        fs.writeFileSync(file, JSON.stringify(item['flight-restrictions']), 'utf-8');
+                        //console.log('Processing',file);
+			fs.writeFileSync(file, JSON.stringify(item['flight-restrictions']), 'utf-8');
                     })
 
                 }
 
             }));
-        callback(null);
+//        callback(null);
     },
     function (callback) {
         console.log('Complete, please run:');
@@ -60,6 +65,3 @@ async.series([
 ], function(){
     process.exit('0');
 })
-
-
-
