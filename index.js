@@ -8,14 +8,14 @@ var fs = require('fs'),
     async = require('async'),
     http = require("http"),
     request = require("request"),
-    sleep = require('sleep',)
+    sleep = require('sleep'),
     options = {
         keepAlive:true,
         maxSockets:10
     };
 
 var agent = new http.Agent(options);
-var postUrl = process.env.POST_URl + ':' + process.env.POST_PORT + '/' + process.env.DB_NAME + '/'
+var postUrl = process.env.POST_URL + ':' + process.env.POST_PORT + '/' + process.env.DB_NAME + '/'
 options = {
     url: postUrl,
     headers: {
@@ -25,7 +25,7 @@ options = {
     agent: agent
 };
 var getStream = function () {
-    var jsonData = process.env.FILE_RESTORE_NAME,
+    var jsonData = path.join(__dirname,process.env.FILE_RESTORE_NAME),
         stream = fs.createReadStream(jsonData, {encoding: 'utf8'}),
         parser = JSONStream.parse('*');
     return stream.pipe(parser);
