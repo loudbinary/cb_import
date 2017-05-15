@@ -1,5 +1,8 @@
 # Import Couchbase backup into new Cluster
 
+Overview:  This utility will take an extracted Couchbase json back up of a Bucket, and loop through all items in backup
+and then post each record to the GatewaySync server.
+
 To run this code, you must create a .env in the root of cloned repository.
 
 Example .env
@@ -9,6 +12,7 @@ POST_PORT=4984
 FILE_RESTORE_NAME="flight_restrictions.json"
 DB_JSON_NODE="flight-restrictions"
 DB_NAME="facilities"
+
 
 Once you've create the file, you are then able to take a backup of your local Couchbase server, via UI.  This will
 produce a zip file.  You will need to extract the contents of the zip file into directory where repository is cloned.
