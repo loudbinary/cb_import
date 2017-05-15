@@ -1,1 +1,1 @@
-# cb_import
+# Import Couchbase backup into new Cluster
