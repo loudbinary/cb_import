@@ -1,3 +1,9 @@
+.idea/
+.env
+flight_restrictions.json
+flight_restrictions.zip
+test.sh
+
 archive_source.zip
 export/
 node_modules/
